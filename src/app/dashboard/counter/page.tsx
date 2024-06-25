@@ -1,9 +1,15 @@
-import React from 'react'
+import { Counter } from '@/app/components'
 
-export default function Counter() {
+export const metadata = {
+  title: "Contador",
+  description: "Productos en el carro de compras",
+};
+
+export default function CounterPage() {
+
   return (
-    <main className="flex min-h-screen  items-center justify-center">
-      Pagina de contador
+    <main className="flex flex-col items-center justify-center w-full h-full">
+       <Counter value={10}/>
     </main>
   )
 }
