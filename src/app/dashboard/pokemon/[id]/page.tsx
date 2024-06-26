@@ -6,19 +6,38 @@ interface Props {
     params: {id: string}
 }
 
-export async function generateMetadata({params}:Props):Promise<Metadata> {
+export async function generateStaticParams() {
+    const static150Pokemons = Array.from({length:150}).map((v,i)=>`${i+1}`);
+    return static150Pokemons.map(id=>({
+        id:id
+    }));
+}
 
-    const {id , name} = await getPokemon(params.id)
+export async function generateMetadata({params}:Props):Promise<Metadata> {
+ 
+    try {
+        const {id , name} = await getPokemon(params.id)
     return{
         title: `${id} - ${name}`,
         description: `Pagina del pokemon ${name}`
     }
+    } catch (error) {
+        return{
+            title: `404 - not found`,
+            description: `Pagina del pokemon no encontrada`
+        }
+    }
+    
 }
 
 const getPokemon = async(id:string)=>{
 
     try {
-        const pokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
+        const pokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`, {
+            next:{
+                revalidate: 60*60*12,
+            }
+        })
         .then(res => res.json())
         return pokemon;
     } catch (error) {
@@ -29,7 +48,7 @@ const getPokemon = async(id:string)=>{
 }
 
 export default async function PokemonPage({params}:Props) {
-
+  
   const pokemon = await getPokemon(params.id)
   
   return (
@@ -37,7 +56,7 @@ export default async function PokemonPage({params}:Props) {
       <div className="relative flex flex-col items-center rounded-[20px] w-[700px] mx-auto bg-white bg-clip-border  shadow-lg  p-3">
         <div className="mt-2 mb-8 w-full">
           <h1 className="px-2 text-xl font-bold text-slate-700 capitalize">
-            #{pokemon.id} {pokemon.name}
+            {pokemon.id} {pokemon.name}
           </h1>
           <div className="flex flex-col justify-center items-center">
             <Image
@@ -85,14 +104,15 @@ export default async function PokemonPage({params}:Props) {
             <div className="flex justify-center">
 
               <Image
-                src={pokemon.sprites.front_default}
+                src={pokemon.sprites.front_default ?? ''}
+
                 width={100}
                 height={100}
                 alt={`sprite ${pokemon.name}`}
               />
 
               <Image
-                src={pokemon.sprites.back_default}
+                src={pokemon.sprites.back_default ?? ''}
                 width={100}
                 height={100}
                 alt={`sprite ${pokemon.name}`}
@@ -106,14 +126,14 @@ export default async function PokemonPage({params}:Props) {
             <div className="flex justify-center">
 
               <Image
-                src={pokemon.sprites.front_shiny}
+                src={pokemon.sprites.front_shiny ?? ''}
                 width={100}
                 height={100}
                 alt={`sprite ${pokemon.name}`}
               />
 
               <Image
-                src={pokemon.sprites.back_shiny}
+                src={pokemon.sprites.back_shiny ?? ''}
                 width={100}
                 height={100}
                 alt={`sprite ${pokemon.name}`}
