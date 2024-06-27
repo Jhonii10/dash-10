@@ -9,7 +9,7 @@ export default function CounterPage() {
 
   return (
     <main className="flex flex-col items-center justify-center w-full h-full">
-       <Counter value={10}/>
+       <Counter />
     </main>
   )
 }
