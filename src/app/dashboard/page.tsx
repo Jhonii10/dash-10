@@ -1,4 +1,4 @@
-import { SimpleWidget } from '@/components'
+import { WidgetGrid } from '@/components'
 import React from 'react'
 
 export const metadata = {
@@ -9,8 +9,8 @@ export const metadata = {
 export default function DashboardPage() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-24">
-       <h1 className='text-3xl font-semibold mb-4'>Panel administrativo</h1>
-      <SimpleWidget/>
+      <h1 className='text-3xl font-semibold mb-4'>Panel administrativo</h1>
+       <WidgetGrid/>
     </main>
   )
 }

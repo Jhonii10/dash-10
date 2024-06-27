@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 import { Provider } from 'react-redux';
-import { store } from '.';
+import { store } from './';
 
 export const Providers = ({
     children,
