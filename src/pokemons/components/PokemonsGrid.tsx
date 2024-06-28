@@ -1,6 +1,5 @@
 import React from 'react'
 import { SimplePokemon } from '../interfaces/simple-pokemons'
-import Image from 'next/image';
 import { PokemonsCard } from './PokemonsCard';
 
 interface Props {
